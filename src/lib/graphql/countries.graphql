@@ -7,9 +7,36 @@ query GetCountries {
   }
 }
 
-query GetCountries($code: string) {
-  countries(code: $code) {
-    states
-    nameprovi
+query GetCountryByCode($code: ID!) {
+  country(code: $code) {
+    awsRegion
+    capital
+    code
+    name
+    continent {
+      code
+      name
+    }
+    currencies
+    emoji
+    emojiU
+    languages {
+      code
+      name
+      native
+      rtl
+    }
+    native
+    phone
+    phones
+    states {
+      code
+      name
+    }
+    subdivisions {
+      code
+      emoji
+      name
+    }
   }
 }
