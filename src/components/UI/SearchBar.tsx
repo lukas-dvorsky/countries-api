@@ -88,6 +88,7 @@ function SearchBar<T, K extends keyof T>({
       className={`relative ${inputAttr.className}`}
       onKeyDown={(e) => {
         if (e.key === "Enter") {
+          if (filteredData.length === 0) return;
           handleAction(filteredData[focusedIndex]);
         }
         if (e.key === "ArrowDown") {
@@ -118,7 +119,11 @@ function SearchBar<T, K extends keyof T>({
           ${isFocused ? "border-blue-400" : "border-mist-400"}`}
         placeholder="Search country..."
         value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        onChange={(e) => {
+          setQuery(e.target.value);
+          setShowRecords(true);
+          setFocusedIndex(0);
+        }}
       />
       <Activity mode={showRecords ? "visible" : "hidden"}>
         <div

@@ -119,6 +119,7 @@ function GameWrapper<T, K extends keyof T>({
               onClick={() => handleOptionClick(option, index)}
               className={`bg-blue-500 hover:bg-blue-600 px-4 py-2 text-white rounded-md cursor-pointer ${highlightedButtons.includes(index) ? "bg-red-500 hover:bg-red-500 cursor-none" : ""}`}
               type="button"
+              disabled={disableButtons.current}
             >
               {String(option[optionKey])}
             </button>
