@@ -103,7 +103,7 @@ function GameWrapper<T, K extends keyof T>({
         <p>
           {dataset.length - unanswered.length} / {dataset.length}
         </p>
-        <Timer ref={timerRef} immediateStart />
+        <Timer ref={timerRef} immediateStart hideHours />
       </div>
       <img
         src={`https://flagcdn.com/${String(randomQuestion[countryCode]).toLocaleLowerCase()}.svg`}
