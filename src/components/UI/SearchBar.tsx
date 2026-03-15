@@ -61,7 +61,7 @@ function SearchBar<T, K extends keyof T>({
         searchBy.some((searchKey) =>
           String(item[searchKey])
             .toLocaleLowerCase()
-            .includes(query.toLocaleLowerCase()),
+            .startsWith(query.toLocaleLowerCase()),
         ),
       );
 

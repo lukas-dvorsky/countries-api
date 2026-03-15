@@ -40,3 +40,13 @@ query GetCountryByCode($code: ID!) {
     }
   }
 }
+
+query GetContinentCountries($code: ID!) {
+  continent(code: $code) {
+    name
+    countries {
+      code
+      name
+    }
+  }
+}
