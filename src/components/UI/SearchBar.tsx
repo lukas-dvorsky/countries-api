@@ -32,6 +32,7 @@ function SearchBar<T, K extends keyof T>({
   const [filteredData, setFilteredData] = useState<T[]>([]);
   const [showRecords, setShowRecords] = useState(query !== "");
   const [isFocused, setFocused] = useState(false);
+  const [focusedIndex, setFocusedIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -70,6 +71,12 @@ function SearchBar<T, K extends keyof T>({
     return () => clearTimeout(t);
   }, [query]);
 
+  const handleAction = (item: T) => {
+    setShowRecords(false);
+    resetAfterAction ? setQuery("") : null;
+    action?.(item);
+  };
+
   return (
     <div
       ref={containerRef}
@@ -79,11 +86,34 @@ function SearchBar<T, K extends keyof T>({
       }}
       onBlur={() => setFocused(false)}
       className={`relative ${inputAttr.className}`}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          handleAction(filteredData[focusedIndex]);
+        }
+        if (e.key === "ArrowDown") {
+          setFocusedIndex((prev) => {
+            if (prev === filteredData.length - 1) {
+              return 0;
+            } else {
+              return prev + 1;
+            }
+          });
+        }
+        if (e.key === "ArrowUp") {
+          setFocusedIndex((prev) => {
+            if (prev === 0) {
+              return filteredData.length - 1;
+            } else {
+              return prev - 1;
+            }
+          });
+        }
+      }}
     >
       <input
         {...inputAttr}
         type="text"
-        className={`border py-2 px-2 w-full outline-0
+        className={`border-b py-2 px-2 w-full outline-0
           ${inputAttr.className}
           ${isFocused ? "border-blue-400" : "border-mist-400"}`}
         placeholder="Search country..."
@@ -98,12 +128,8 @@ function SearchBar<T, K extends keyof T>({
             filteredData.map((item, index) => (
               <div
                 key={index}
-                className={`flex gap-4 bg-mist-50 hover:bg-mist-200 cursor-pointer py-1 px-4 ${inputAttr.className}`}
-                onClick={() => {
-                  setShowRecords(false);
-                  resetAfterAction ? setQuery("") : null;
-                  action?.(item);
-                }}
+                className={`flex gap-4 bg-mist-50 hover:bg-mist-200 cursor-pointer py-1 px-4 ${inputAttr.className} ${focusedIndex === index ? "bg-mist-200" : ""}`}
+                onClick={() => handleAction(item)}
               >
                 {showData.map((key, index) => (
                   <span key={index}>{String(item[key])}</span>
