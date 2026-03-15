@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 interface GameFinalScreenProps {
   answers: { right: number; wrong: number };
   hideRightAnswers?: boolean;
@@ -11,7 +13,6 @@ function GameFinalScreen({
   time,
   resetGame,
 }: GameFinalScreenProps) {
-  console.log(time);
   return (
     <div className="flex flex-col items-center gap-8">
       <p className="text-4xl">Congratulations!</p>

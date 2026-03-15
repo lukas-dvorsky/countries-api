@@ -10,7 +10,13 @@ type GameWrapperProps<T, K extends keyof T> = {
   numberOfOptions?: number;
   removeOnWrongAnswer?: boolean;
   nextQuestionOnWrongAnswer?: boolean;
+  localstorageSetting?: GameLocalStorageProps;
 };
+
+export interface GameLocalStorageProps {
+  saveToLocalStorage: boolean;
+  saveAs: string;
+}
 
 function GameWrapper<T, K extends keyof T>({
   dataset,
@@ -19,6 +25,7 @@ function GameWrapper<T, K extends keyof T>({
   numberOfOptions = 3,
   removeOnWrongAnswer,
   nextQuestionOnWrongAnswer,
+  localstorageSetting,
 }: GameWrapperProps<T, K>) {
   if (numberOfOptions > dataset.length) {
     throw new Error("numberOfOptions cannot be larger than dataset lenght!");
@@ -100,6 +107,20 @@ function GameWrapper<T, K extends keyof T>({
   }, [unanswered]);
 
   if (unanswered.length === 0) {
+    if (localstorageSetting?.saveToLocalStorage && timerRef.current) {
+      const prev = localStorage.getItem(localstorageSetting.saveAs);
+      const current = timerRef.current.getTimeFormatted();
+
+      if (
+        !prev ||
+        (prev && +prev.split(":")[0] < +current.split(":")[0]) ||
+        (+prev.split(":")[0] === +current.split(":")[0] &&
+          +prev.split(":")[1] < +current.split(":")[1])
+      ) {
+        localStorage.setItem(localstorageSetting.saveAs, current);
+      }
+    }
+
     return (
       <GameFinalScreen
         hideRightAnswers={removeOnWrongAnswer}

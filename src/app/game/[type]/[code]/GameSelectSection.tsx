@@ -1,3 +1,5 @@
+"use client";
+
 import GameRedirectButton from "./GameRedirectButton";
 
 interface GameSelectionSectionProps<T, K extends keyof T> {
@@ -18,11 +20,14 @@ function GameSelectionSection<T, K extends keyof T>({
       <span className="text-center text-3xl font-bold">{secitonTitle}</span>
       <div className="flex gap-8">
         {data.map((item, index) => {
+          const bestTime = localStorage.getItem(String(item[codeKey]));
+
           return (
             <GameRedirectButton
               key={String(item[codeKey]) + index}
               title={String(item[titleKey])}
               url={`game/flags/${String(item[codeKey])}`}
+              bestTime={bestTime}
             />
           );
         })}

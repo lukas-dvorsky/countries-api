@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import GameWrapper from "./GameWrapper";
+import GameWrapper, { GameLocalStorageProps } from "./GameWrapper";
 import CheckBox from "@/components/UI/Checkbox";
 
 interface GameClientProps<T, K extends keyof T> {
@@ -9,6 +9,7 @@ interface GameClientProps<T, K extends keyof T> {
   countryCode: K;
   optionKey: K;
   title: string;
+  localstorageSetting?: GameLocalStorageProps;
 }
 
 interface GameOptions {
@@ -21,6 +22,7 @@ function GameClient<T, K extends keyof T>({
   countryCode,
   optionKey,
   title,
+  localstorageSetting,
 }: GameClientProps<T, K>) {
   const [gameOptions, setGameOptions] = useState<GameOptions>({
     nextQuestionOnWrongAnswer: false,
@@ -35,6 +37,7 @@ function GameClient<T, K extends keyof T>({
           dataset={dataset}
           countryCode={countryCode}
           optionKey={optionKey}
+          localstorageSetting={localstorageSetting}
           {...gameOptions}
         />
       ) : (

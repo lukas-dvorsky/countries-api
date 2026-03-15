@@ -26,6 +26,7 @@ async function GamePage({ params }: GamePageProps) {
         countryCode="code"
         optionKey="name"
         title={data.continent.name}
+        localstorageSetting={{ saveToLocalStorage: true, saveAs: code }}
       />
     </main>
   );
