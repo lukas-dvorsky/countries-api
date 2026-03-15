@@ -1,15 +1,22 @@
+import { client } from "@/lib/graphql/client";
+import GameSelectionSection from "./game/[type]/[code]/GameSelectSection";
+import { GetContinentsDocument, GetContinentsQuery } from "@/gql/graphql";
+
 export default async function Home() {
-  // const data = await client.request<GetCountriesQuery>(GetCountriesDocument);
+  const continents = await client.request<GetContinentsQuery>(
+    GetContinentsDocument,
+  );
 
   return (
     <main className="h-screen w-screen flex flex-col items-center overflow-scroll">
-      {/* Search country */}
-      {/* <Navbar searchBarData={data} /> */}
-      {/* Country games */}
-
-      {/* {data.countries.map((country) => (
-        <Country key={country.code} country={country}></Country>
-      ))} */}
+      <div className="mt-32 flex flex-col gap-16">
+        <GameSelectionSection
+          data={continents.continents}
+          titleKey="name"
+          secitonTitle="Guess countries by their flags!"
+          codeKey="code"
+        />
+      </div>
     </main>
   );
 }
