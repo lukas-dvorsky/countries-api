@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import GameFinalScreen from "./GameFinalScreen";
 import Timer, { TimerHandle } from "@/components/UI/Timer";
 
@@ -26,6 +26,7 @@ function GameWrapper<T, K extends keyof T>({
   const [unanswered, setUnanswered] = useState<T[]>(dataset);
   const [highlightedButtons, setHighlightedButtons] = useState<number[]>([]);
   const [finalTime, setFinalTime] = useState<string>("-");
+  const [buttonsDisabled, setButtonDisabled] = useState(false);
   const stats = useRef<{ right: number; wrong: number }>({
     right: 0,
     wrong: 0,
@@ -36,43 +37,58 @@ function GameWrapper<T, K extends keyof T>({
     [unanswered],
   );
   const randomQuestion = unanswered[randomIndex];
-  const disableButtons = useRef<boolean>(false);
 
   useEffect(() => {
     setHighlightedButtons([]);
   }, [unanswered]);
 
-  const handleOptionClick = (option: T, btnIndex: number) => {
-    if (
-      disableButtons.current === true ||
-      highlightedButtons.includes(btnIndex)
-    )
-      return;
-    if (randomQuestion[optionKey] === option[optionKey]) {
-      stats.current = { ...stats.current, right: stats.current.right + 1 };
+  const handleOptionClick = useCallback(
+    (option: T, btnIndex: number) => {
+      // Right Answer
+      if (buttonsDisabled || highlightedButtons.includes(btnIndex)) return;
+      if (randomQuestion[optionKey] === option[optionKey]) {
+        stats.current.right += 1;
 
-      if (unanswered.length === 1) {
-        timerRef.current?.pause();
-        setFinalTime(timerRef.current?.getTimeFormatted() ?? "-");
-      }
+        if (unanswered.length === 1) {
+          timerRef.current?.pause();
+          setFinalTime(timerRef.current?.getTimeFormatted() ?? "-");
+        }
 
-      setUnanswered((prev) => prev.filter((f) => f !== randomQuestion));
-    } else {
-      stats.current = { ...stats.current, wrong: stats.current.wrong + 1 };
-      if (nextQuestionOnWrongAnswer || removeOnWrongAnswer) {
-        disableButtons.current = true;
-        setHighlightedButtons((prev) => [...prev, btnIndex]);
-        setTimeout(() => {
-          if (removeOnWrongAnswer)
-            setUnanswered((prev) => prev.filter((f) => f !== randomQuestion));
-
-          disableButtons.current = false;
-        }, 1000);
+        setUnanswered((prev) => prev.filter((f) => f !== randomQuestion));
+        // Wrong Answer
       } else {
-        setHighlightedButtons((prev) => [...prev, btnIndex]);
+        stats.current.wrong += 1;
+        if (nextQuestionOnWrongAnswer || removeOnWrongAnswer) {
+          setButtonDisabled(true);
+          setHighlightedButtons((prev) => [...prev, btnIndex]);
+          setTimeout(() => {
+            if (removeOnWrongAnswer)
+              setUnanswered((prev) => prev.filter((f) => f !== randomQuestion));
+
+            setButtonDisabled(false);
+          }, 1000);
+        } else {
+          setButtonDisabled(true);
+          setHighlightedButtons((prev) => [...prev, btnIndex]);
+          setTimeout(() => {
+            if (removeOnWrongAnswer)
+              setUnanswered((prev) => prev.filter((f) => f !== randomQuestion));
+
+            setButtonDisabled(false);
+          }, 1000);
+        }
       }
-    }
-  };
+    },
+    [
+      unanswered,
+      randomQuestion,
+      optionKey,
+      removeOnWrongAnswer,
+      nextQuestionOnWrongAnswer,
+      highlightedButtons,
+      buttonsDisabled,
+    ],
+  );
 
   const options: T[] = useMemo(() => {
     const tempDataset = dataset.filter((item) => item !== randomQuestion);
@@ -119,7 +135,7 @@ function GameWrapper<T, K extends keyof T>({
               onClick={() => handleOptionClick(option, index)}
               className={`bg-blue-500 hover:bg-blue-600 px-4 py-2 text-white rounded-md cursor-pointer ${highlightedButtons.includes(index) ? "bg-red-500 hover:bg-red-500 cursor-none" : ""}`}
               type="button"
-              disabled={disableButtons.current}
+              disabled={buttonsDisabled}
             >
               {String(option[optionKey])}
             </button>
