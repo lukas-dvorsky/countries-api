@@ -14,7 +14,7 @@ function CountryData({ country, code }: CountryDataProps) {
         src={`https://flagcdn.com/${code.toLocaleLowerCase()}.svg`}
         alt={`${code} Flag`}
         draggable={false}
-        className="select-none max-h-96 bg-inherit sm:max-h-56 border-t border-black/10 sticky top-0 z-5"
+        className="select-none max-h-96 bg-inherit sm:max-h-56 border-t border-black/10 sticky top-0 z-5 shadow-sm shadow-black/20"
       />
       <h1 className="text-2xl font-bold text-center">
         {country?.name} <span className="font-light">({country?.code})</span>
@@ -31,6 +31,7 @@ function CountryData({ country, code }: CountryDataProps) {
       <NameValuePair name="Continent" value={country?.continent.name} />
       <Separator />
       <NameValuePair name="Phone numbers" value={country?.phones.join(", ")} />
+      <Separator />
 
       <div className="flex flex-col gap-4">
         <span className="font-bold text-xl text-center ">Languages</span>
@@ -44,6 +45,47 @@ function CountryData({ country, code }: CountryDataProps) {
           );
         })}
       </div>
+
+      {country?.states.length !== 0 && (
+        <>
+          <Separator />
+          <div className="flex flex-col gap-4">
+            <span className="font-bold text-xl text-center ">States</span>
+            {country?.states.map((state) => {
+              return (
+                <div key={state.code}>
+                  <NameValuePair name="Name" value={state.name} />
+                  <NameValuePair name="Code" value={state.code} />
+                </div>
+              );
+            })}
+          </div>
+        </>
+      )}
+
+      {country?.subdivisions.length !== 0 && (
+        <>
+          <Separator />
+          <div className="flex flex-col gap-4">
+            <span className="font-bold text-xl text-center ">Subdivisions</span>
+            {country?.subdivisions.map((subdivision) => {
+              return (
+                <div key={subdivision.code}>
+                  <NameValuePair
+                    name="Name"
+                    value={
+                      subdivision.emoji
+                        ? subdivision.emoji + " " + subdivision.name
+                        : subdivision.name
+                    }
+                  />
+                  <NameValuePair name="Code" value={subdivision.code} />
+                </div>
+              );
+            })}
+          </div>
+        </>
+      )}
     </div>
   );
 }
