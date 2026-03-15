@@ -8,6 +8,7 @@ interface GameClientProps<T, K extends keyof T> {
   dataset: T[];
   countryCode: K;
   optionKey: K;
+  title: string;
 }
 
 interface GameOptions {
@@ -19,6 +20,7 @@ function GameClient<T, K extends keyof T>({
   dataset,
   countryCode,
   optionKey,
+  title,
 }: GameClientProps<T, K>) {
   const [gameOptions, setGameOptions] = useState<GameOptions>({
     nextQuestionOnWrongAnswer: false,
@@ -37,6 +39,7 @@ function GameClient<T, K extends keyof T>({
         />
       ) : (
         <div className="flex flex-col gap-16">
+          <span className="text-center text-4xl font-bold">{title}</span>
           <button
             onClick={() => setGameStarted(true)}
             className="cursor-pointer px-4 mx-auto py-2 w-1/2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white"

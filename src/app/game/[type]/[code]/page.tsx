@@ -25,6 +25,7 @@ async function GamePage({ params }: GamePageProps) {
         dataset={data.continent.countries}
         countryCode="code"
         optionKey="name"
+        title={data.continent.name}
       />
     </main>
   );
