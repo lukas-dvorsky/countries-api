@@ -8,6 +8,12 @@ Application is available [HERE](https://nextjs-graphql-countries.vercel.app/)
 
 If you want to run application locally run these steps:
 
+### Prerequsities
+
+- NodeJS: version 24+
+
+### Installation
+
 ```bash
 # Install dependencies
 npm i
