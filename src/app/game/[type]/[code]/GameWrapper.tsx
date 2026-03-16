@@ -154,7 +154,10 @@ function GameWrapper<T, K extends keyof T>({
             <button
               key={String(option[optionKey])}
               onClick={() => handleOptionClick(option, index)}
-              className={`bg-blue-500 hover:bg-blue-600 px-4 py-2 text-white rounded-md cursor-pointer ${highlightedButtons.includes(index) ? "bg-red-500 hover:bg-red-500 cursor-none" : ""}`}
+              className={`bg-blue-500 hover:bg-blue-600 px-4 py-2 text-white
+                 rounded-md cursor-pointer
+                 ${buttonsDisabled ? "bg-gray-400 hover:bg-gray-400" : ""}
+                  ${highlightedButtons.includes(index) ? "bg-red-500 hover:bg-red-500 cursor-none" : ""}`}
               type="button"
               disabled={buttonsDisabled}
             >
