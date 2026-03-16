@@ -4,6 +4,19 @@ I created this app to learn basics of GraphQL and refresh my memory with Next.JS
 
 Next.js application that shows data about countries. App also includes mini-game where user guesses countries by their flags on selected continent.
 
+### Used libraries
+
+- GraphQL
+- Leaflet
+- Next.js
+- React
+- TailwindCSS
+
+### Used API's and sources
+
+- https://countries.trevorblades.com/ - Data about countries
+- https://flagcdn.com/ - SVG flags
+
 ## Application
 
 Application is available [HERE](https://nextjs-graphql-countries.vercel.app/)
@@ -79,16 +92,3 @@ Completion time is saved to localStorage and then shown at the main page below g
 **Game usage example**
 
 ![alt text](image-2.png)
-
-### Used libraries
-
-- GraphQL
-- Leaflet
-- Next.js
-- React
-- TailwindCSS
-
-### Used API's and sources
-
-- https://countries.trevorblades.com/ - Data about countries
-- https://flagcdn.com/ - SVG flags
