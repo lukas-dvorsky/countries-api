@@ -25,6 +25,7 @@ async function GamePage({ params }: GamePageProps) {
         dataset={data.continent.countries}
         countryCode="code"
         optionKey="name"
+        numberOfOptions={3}
         title={data.continent.name}
         localstorageSetting={{ saveToLocalStorage: true, saveAs: code }}
       />

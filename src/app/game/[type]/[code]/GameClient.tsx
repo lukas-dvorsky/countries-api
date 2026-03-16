@@ -9,6 +9,7 @@ interface GameClientProps<T, K extends keyof T> {
   countryCode: K;
   optionKey: K;
   title: string;
+  numberOfOptions: number;
   localstorageSetting?: GameLocalStorageProps;
 }
 
@@ -23,6 +24,7 @@ function GameClient<T, K extends keyof T>({
   optionKey,
   title,
   localstorageSetting,
+  numberOfOptions,
 }: GameClientProps<T, K>) {
   const [gameOptions, setGameOptions] = useState<GameOptions>({
     nextQuestionOnWrongAnswer: false,
@@ -37,6 +39,7 @@ function GameClient<T, K extends keyof T>({
           dataset={dataset}
           countryCode={countryCode}
           optionKey={optionKey}
+          numberOfOptions={numberOfOptions}
           localstorageSetting={localstorageSetting}
           {...gameOptions}
         />
