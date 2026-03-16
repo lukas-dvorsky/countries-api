@@ -70,6 +70,10 @@ There user can see statistics like
 
 Completion time is saved to localStorage and then shown at the main page below game selection.
 
+**Game usage example**
+
+![alt text](image-2.png)
+
 ### Used libraries
 
 - GraphQL
